@@ -1,12 +1,19 @@
 import java.awt.*;
 import java.awt.event.*;
 
-public class Aquarium extends Frame{
+public class Aquarium extends Frame implements Runnable{
     
     //Background and Fish images
-    Image aquariumImage;
+    Image aquariumImage,memoryImage;
     Image[] fishImages= new Image[2];
+    int numberFish=12;
+    Vector<Fish> fishes= new Vector<Fish>();
+    int sleepTime=120;
+    boolean runOK=true;
     
+    Thread thread;
+    
+    Graphics memoryGraphics;
     MediaTracker tracker;
     
    Aquarium(){
@@ -32,15 +39,78 @@ public class Aquarium extends Frame{
     	 System.out.println(ex.getMessage());
      }
      
+     //Set Window size to background Image, Show Window
+     setSize(aquariumImage.getWidth(this),aquariumImage.getHeight(this));
+     setResizable(false);
+     setVisible(true);
+     
+     memoryImage=createImage(getSize().width,getSize().height);
+     memoryGraphics=memoryImage.getGraphics();
+     
+     thread=new Thread(this);
+     thread.start();
+     
+     
      //Catch Event of User clicking Exit Button
      this.addWindowListener(new WindowAdapter(){
          public void windowClosing(
             WindowEvent windowEvent){
+            runOK=false;//thread clean up
              System.exit(0);
          }
      });
      
      
+}
+public void update(Graphics graphics){
+   memoryGraphics.drawImage(aquariumImage,0,0,this)
+   
+   for(int i=0;i<numberFish;i++){
+      ((Fish)fishes.elementAt(i).drawFishImage(memoryGraphics);
+      }
+      
+      graphics.drawImage(memoryImage,0,0,this);
+  
+}
+
+public void run(){
+
+   //Boundaries that fish swim in
+   Rectangle edges = new Rectangle(0 + getInsets().left, 0
+   + getInsets().top, getSize().width - (getInsets().left
+   + getInsets().right), getSize().height - (getInsets().top
+   + getInsets().bottom));
+   
+   
+   for (int i= 0; i < numberFish;i++){
+    
+            fishes.add(new Fish(fishImages[0], 
+                fishImages[1], edges, this));
+            try {
+                Thread.sleep(20);
+            }
+            catch (Exception exp) {
+                System.out.println(exp.getMessage());
+            }
+        }
+        
+        Fish fish;
+        
+        while(runOK){
+         for(int i=0;i<numberFish;i++){
+            fish=(Fish)fishes.elementAt(i);
+            fish.swim();
+            }
+            
+            try{
+               Thread.sleep(sleepTime);
+
+         }catch(Exception ex){
+            System.out.println(ex.getMessage());
+         }
+         repaint();
+
+}
 }
    
    public static void main(String[] args){
