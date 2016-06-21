@@ -119,3 +119,31 @@ public void run(){
       
      }
 }
+
+class Fish{
+   Component tank;
+   Image image1;
+   Image image2;
+   Point location;
+   Rectangle edges;
+   Random ran;
+   
+   //constructor
+   public Fish(Image image1,Image image2,Rectangle edges,
+               Component tank){
+               
+           ran=new Random(System.currentTimeMillis());
+           this.tank=tank;
+           this.image1=image1;
+           this.image2=image2;
+           this.edges=edges;
+           
+           this.location = new Point(100 + (Math.abs(random.nextInt()) 
+            % 300), 100 + (Math.abs(100 + random.nextInt()) % 100));
+
+        this.velocity = new Point(random.nextInt() % 8, 
+            random.nextInt() % 8); 
+               }
+
+   
+}
