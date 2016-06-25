@@ -8,7 +8,7 @@ public class Aquarium extends Frame implements Runnable{
     //Background and Fish images
     Image aquariumImage,memoryImage;
     Image[] fishImages= new Image[2];
-    int numberFish=12;
+    int numberFish=50;
     Vector<Fish> fishes= new Vector<Fish>();
     int sleepTime=120;
     boolean runOK=true;
@@ -193,6 +193,7 @@ class Fish{
   
     public void drawFishImage(Graphics g)
     {
+         //Set Correct Facing Image based sign of Velocity
         if(velocity.x < 0) {
             g.drawImage(image1, location.x, 
                 location.y, tank);
